@@ -3,170 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Kawaii Tic Tac Toe</title>
-  <style>
-    /* General Page */
-    body {
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      background: linear-gradient(135deg, #ffe6f0, #e6f0ff);
-      margin: 0;
-      padding: 0;
-      color: #444;
-    }
-
-    h1 {
-      margin: 20px;
-      font-size: 2.5em;
-      font-weight: 700;
-      color: #ff7aa2;
-      text-shadow: 2px 2px #ffd6e6;
-    }
-
-    /* Game Board */
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 120px);
-      grid-template-rows: repeat(3, 120px);
-      gap: 12px;
-      justify-content: center;
-      margin: 30px auto;
-    }
-
-    /* Each Cell */
-    .cell {
-      width: 120px;
-      height: 120px;
-      background: #fff;
-      border-radius: 25px;
-      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-      font-size: 3em;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    .cell:hover {
-      transform: scale(1.07);
-      background: #fff0f5;
-    }
-
-    .cell.taken {
-      pointer-events: none;
-    }
-
-    /* Winner Highlight */
-    .winner {
-      background: #ffd6e6 !important;
-      box-shadow: 0px 6px 18px rgba(255, 118, 180, 0.4);
-    }
-
-    /* Status */
-    #status {
-      font-size: 1.4em;
-      margin: 15px;
-      font-weight: 600;
-      color: #ff4d94;
-    }
-
-    /* Button Styling */
-    button {
-      margin: 15px;
-      padding: 12px 30px;
-      font-size: 1.2em;
-      font-weight: 600;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ffb6c1, #ff9ac6);
-      color: white;
-      box-shadow: 0px 4px 12px rgba(255, 182, 193, 0.4);
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #ff99bb, #ff85a2);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>✨ Kawaii Tic Tac Toe ✨</h1>
-  <div id="status">Player X's turn 💕</div>
+
+  <div id="mode-selection">
+    <button onclick="setMode('pvp')">👥 Player vs Player</button>
+    <button onclick="setMode('pvc')">🤖 Player vs Computer</button>
+  </div>
+
+  <div id="status">Choose a mode to start!</div>
   <div class="board" id="board"></div>
-  <button onclick="restartGame()">🔄 Restart</button>
+  <button onclick="restartGame()">🔄 Restart Game</button>
 
-  <script>
-    const board = document.getElementById("board");
-    const status = document.getElementById("status");
-    let currentPlayer = "X";
-    let gameActive = true;
-    let cells = [];
-
-    // Create cells
-    for (let i = 0; i < 9; i++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
-      cell.addEventListener("click", () => handleClick(cell, i));
-      board.appendChild(cell);
-      cells.push("");
-    }
-
-    function handleClick(cell, index) {
-      if (!gameActive || cells[index] !== "") return;
-
-      cells[index] = currentPlayer;
-      cell.textContent = currentPlayer === "X" ? "🌸" : "🍓"; // Cute icons
-      cell.classList.add("taken");
-
-      if (checkWinner()) {
-        status.textContent = `Player ${currentPlayer} wins! 🎉`;
-        gameActive = false;
-        return;
-      }
-
-      if (!cells.includes("")) {
-        status.textContent = "It's a draw! 🤝";
-        gameActive = false;
-        return;
-      }
-
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-      status.textContent = `Player ${currentPlayer}'s turn 💕`;
-    }
-
-    function checkWinner() {
-      const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-
-      for (const [a,b,c] of winPatterns) {
-        if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
-          document.querySelectorAll(".cell")[a].classList.add("winner");
-          document.querySelectorAll(".cell")[b].classList.add("winner");
-          document.querySelectorAll(".cell")[c].classList.add("winner");
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function restartGame() {
-      currentPlayer = "X";
-      gameActive = true;
-      cells = ["", "", "", "", "", "", "", "", ""];
-      status.textContent = "Player X's turn 💕";
-      document.querySelectorAll(".cell").forEach(cell => {
-        cell.textContent = "";
-        cell.classList.remove("taken", "winner");
-      });
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
